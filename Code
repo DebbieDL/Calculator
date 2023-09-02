@@ -1,0 +1,242 @@
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
+import java.io.*;
+
+
+class Calculator implements ActionListener{
+
+	double value;
+	double num1;
+	double  num2;
+	char op;
+	
+        JFrame frame = new JFrame();
+        JTextField textF = new JTextField();
+	JTextField textF2 = new JTextField();
+
+	JButton[] buttons = new JButton[10];
+	JButton[] operators = new JButton[7];
+
+    Calculator(){
+	
+	textF.setBackground(Color.darkGray);
+	textF.setForeground(Color.cyan);
+	textF.setOpaque(true);
+	textF.setLayout(new FlowLayout());
+	textF.setFont(new Font("MV BOLI",Font.BOLD,40));
+
+
+	textF2.setFont(new Font("MV BOLI",Font.BOLD,40));
+	textF2.setBackground(Color.darkGray);
+	textF2.setForeground(Color.cyan);
+	textF2.setBorder(BorderFactory.createLineBorder (new Color (0,0,0,0)));
+	
+	frame.add(textF);
+
+
+	buttons[0] = new JButton("1");
+	buttons[1] = new JButton("2");
+	buttons[2] = new JButton("3");
+	buttons[3] = new JButton("4");
+	buttons[4] = new JButton("5");
+	buttons[5] = new JButton("6");
+	buttons[6] = new JButton("7");
+	buttons[7] = new JButton("8");
+	buttons[8] = new JButton("9");
+	buttons[9] = new JButton("0");
+	
+	operators[0] = new JButton("+");
+	operators[1] = new JButton("-");
+	operators[2] = new JButton("*");
+	operators[3] = new JButton("/");
+	operators[4] = new JButton("√");
+	operators[5] = new JButton("=");
+	operators[6] = new JButton("C");
+
+    for(int i=0; i<buttons.length;i++){
+  
+  	buttons[i].setBackground(Color.darkGray);
+  	buttons[i].setForeground(Color.cyan);
+        buttons[i].addActionListener(this);
+	frame.add(buttons[i]);
+	
+    }
+    
+    for(int j=0;j<operators.length;j++){
+    	
+    	operators[j].setBackground(Color.darkGray);
+    	operators[j].setForeground(Color.cyan);
+    	operators[j].addActionListener(this);
+    	frame.add(operators[j]);
+    
+    }
+    
+      
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setSize(420,420);
+    frame.setLayout(new GridLayout(6,3));
+    frame.setVisible(true);
+
+
+    }
+
+
+
+    public void actionPerformed(ActionEvent e){
+    try{
+    	
+	Object o = e.getSource();
+	
+	
+    //Adding number names to the buttons
+    for(int m = 0;m<buttons.length;m++){
+	
+	if(o==buttons[m]){
+	textF.setText(textF.getText() + buttons[m].getText());
+	
+	}
+
+    }
+	
+	
+    //equals button operation
+    textF2.setText("");
+    
+    if(o == operators[5]){
+    
+    	//for square root
+    	if(op == '√'){
+    	operation();
+    	textF2.setText("");
+    	textF.setText(""+value);
+    	
+    	}
+    	
+	num2 = Double.parseDouble(textF.getText());
+	operation();
+	textF.setText(""+value);
+	
+    	}
+    	
+    //clear button operation
+    else if(o == operators[6]){
+	value = num1 = num2 = 0;
+	textF.setText("");
+	textF2.setText("");
+	
+	}
+	
+	
+    //operators activation according to clicked button
+    if(o == operators[0]){
+
+	num1 = Double.parseDouble(textF.getText());
+	op = '+';
+	textF.setText("");
+	textF2.setText(String.valueOf(op));
+	textF.add(textF2);
+	
+	
+	}
+    else if(o == operators[1]){
+    
+	num1 = Integer.parseInt(textF.getText());
+	op = '-';
+	textF.setText("");
+	textF2.setText(String.valueOf(op));
+	textF.add(textF2);
+	
+	}
+    else if(o == operators[2]){
+    	
+	num1 = Integer.parseInt(textF.getText());
+	op = '*';
+	textF.setText("");
+	textF2.setText(String.valueOf(op));
+	textF.add(textF2);
+        
+	}
+    else if(o == operators[3]){
+    	
+	num1 = Integer.parseInt(textF.getText());
+	op = '/';
+	textF.setText("");
+	textF2.setText(String.valueOf(op));
+	textF.add(textF2);
+	 
+	}
+	else if(o == operators[4]){
+	
+	num1 = Integer.parseInt(textF.getText());
+	op = '√';
+	textF.setText("");
+	textF2.setText(String.valueOf(op));
+	textF.add(textF2);
+	}
+	
+	
+    }
+	
+    //Very professional error handling!
+	
+    catch(Exception exc){
+	textF.setText("Error");
+	exc.printStackTrace();
+	
+     	}
+    }
+    
+    
+    void operation(){
+    
+    // operators doing operations xD
+    
+    switch(op){
+    
+   
+    case '+':
+    	
+    	value = num1 + num2;
+    	break;
+    
+    
+    case '-':
+   
+    	value = num1 - num2;
+    	if(num1 < num2 && value > 0){
+    	value = -value;
+    	
+    	}
+    	else if(num1 > num2 && value < 0){
+    	value = Math.abs(value);
+    	
+    	}
+    	break;
+    
+    
+    case '*':
+    
+    	value = num1 * num2;
+    	break;
+    
+    case '/':
+   	
+    	value = num1 / num2;
+    	break;
+    	
+    	
+    case '√':
+    	
+    	value = Math.sqrt(num1);
+    	break;
+    
+    
+    }
+    	}
+    
+    public static void main(String [] args){
+	new Calculator();
+	
+	}
+    }
